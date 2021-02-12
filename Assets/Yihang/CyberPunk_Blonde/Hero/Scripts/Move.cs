@@ -9,24 +9,29 @@ namespace UnityEngine.Tutorials
     {
         Rigidbody2D rigid;
         Animator anim;
-         Vector2 dir = new Vector2(0,-1);
+        Vector2 dir = new Vector2(0,-1);
         Vector2 bulletDirection = new Vector2(0, -1);
+
         public float speed = 300.0f;
-    
         public float jumpHeight = 8f;
+        public float AmmoPower = 10f;
         public GameObject bullet;
-        public float strenth = 10f;
-
-
-
-
+        private int AmmoPickUp=5;
+        private int changeScalePickUp = 1;
+     
+        [SerializeField] private int currentBullet=0;
+        [SerializeField] private int changeScale = 0;
+     
 
         // Start is called before the first frame update
         void Start() {
        
             rigid = GetComponent<Rigidbody2D>();
             anim = GetComponent<Animator>();
-           
+            currentBullet = 0;
+            changeScale = 0;
+            
+          
            
         }
   
@@ -49,18 +54,52 @@ namespace UnityEngine.Tutorials
             anim.SetFloat("Ver", dir.y);
             anim.SetFloat("Magnitude", rigid.velocity.magnitude);
         }
-      
+
+
+        private void OnTriggerEnter2D(Collider2D collision)
+        {
+            if (collision.gameObject.CompareTag("AmmoPickUp"))
+            {
+                currentBullet+= AmmoPickUp;
+                Destroy(collision.gameObject);
+            }//AmmoPickUp
+            else if (collision.gameObject.CompareTag("ChangeScale"))
+            {
+                changeScale += changeScalePickUp;
+                Destroy(collision.gameObject);
+                    
+            }//ScaleChangePickUp
+        } 
+
+  
         private void attack()
         {
-          
-            if (Input.GetButtonDown("Fire1"))
+
+            if (Input.GetButtonDown("Fire1") && currentBullet > 0)
             {
-                GameObject bulletRing = Instantiate(bullet, rigid.position,Quaternion.identity);
-                bulletRing.GetComponent<Rigidbody2D>().AddForce(bulletDirection*strenth, ForceMode2D.Impulse);
-               
-               
+                currentBullet--;
+
+                GameObject bulletRing = Instantiate(bullet, rigid.position, Quaternion.identity);
+                bulletRing.GetComponent<Rigidbody2D>().AddForce(bulletDirection * AmmoPower, ForceMode2D.Impulse);
+
+
             }
         }
+        private void reduceScale()
+        {
+            if (Input.GetKeyDown(KeyCode.J)&&changeScale>0 )
+            {
+                changeScale--;
+                transform.localScale = new Vector2(0.5f, 0.5f);
+                
+            }
+            else if (Input.GetKeyUp(KeyCode.J))
+            {
+                transform.localScale = new Vector2(1.0f, 1.0f);
+            }
+        }
+
+       
         private void Movement()
         {
        
@@ -76,11 +115,13 @@ namespace UnityEngine.Tutorials
 	    private void Update()
         {
             attack();
+            reduceScale();
             if (Input.GetAxisRaw("Horizontal")!=0||Input.GetAxisRaw("Vertical")!=0)
             {
                 OnRotate();
             }
             OnMove();
+            
 
         }
 	    void FixedUpdate() {

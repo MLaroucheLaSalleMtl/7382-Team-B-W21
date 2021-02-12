@@ -15,8 +15,8 @@ GameObject:
   - component: {fileID: 1583485538978857443}
   - component: {fileID: 1583485538978857442}
   m_Layer: 0
-  m_Name: Gladiator_BLUE
-  m_TagString: Untagged
+  m_Name: Player
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -156,6 +156,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 300
+  jumpHeight: 8
+  AmmoPower: 10
+  bullet: {fileID: 4730157143474293557, guid: 59b55df4cd847234f883a41533c0abe5, type: 3}
+  currentBullet: 0
+  changeScale: 0
 --- !u!1 &1585165202295696046
 GameObject:
   m_ObjectHideFlags: 0
