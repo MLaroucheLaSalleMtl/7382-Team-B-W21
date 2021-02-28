@@ -12,6 +12,8 @@ TagManager:
   - trap
   - HPadd
   - coin
+  - Undefined
+  - DoorArea
   layers:
   - Default
   - TransparentFX

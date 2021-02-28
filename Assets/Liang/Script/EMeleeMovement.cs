@@ -103,12 +103,12 @@ public class EMeleeMovement : MonoBehaviour
             }
             
             //if walk counter goes to 0, wait counter will be activated
-            if (walkCounter < 0)
-            {
-                isWalking = false;
-                //waitCounter = waitTime;
-                waitCounter = Random.Range(waitTime * 0.75f, waitTime * 1.75f);
-            }
+            //if (walkCounter < 0)
+            //{
+            //    isWalking = false;
+            //    //waitCounter = waitTime;
+            //    waitCounter = Random.Range(waitTime * 0.75f, waitTime * 1.75f);
+            //}
 
         }
         else

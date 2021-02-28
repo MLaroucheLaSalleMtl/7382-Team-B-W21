@@ -9,13 +9,14 @@ using UnityEngine.UI;
     {
         Rigidbody2D rigid;
         Animator anim;
-        Vector2 dir = new Vector2(0,-1);
-        Vector2 bulletDirection = new Vector2(0, -1);
+        Vector2 dir = new Vector2(0,-1); //Character direction
+        Vector2 bulletDirection = new Vector2(0, -1); //shoot where your aim at (facing)
 
-        public float speed = 300.0f;
-        public float AmmoPower = 10f;
+        public float speed = 300.0f; //Character moving
+        public float AmmoPower = 10f; //bullet range
         public GameObject bullet;
         public bool isProtect = false;
+        public bool getKey = false;
 
         private int AmmoPickUp=5;
         private int changeScalePickUp = 1;
@@ -24,6 +25,9 @@ using UnityEngine.UI;
         private GameManager gameManager;
         private float countDown = 0f;
         private float maxValue = 100;
+        private OpenDoor door;
+        
+     
       
     
  
@@ -34,6 +38,7 @@ using UnityEngine.UI;
         [SerializeField] private float currentValue;
         [SerializeField] private Text staText;
         [SerializeField] private int coin=0;
+        [SerializeField] private int key ;
 
 
 
@@ -44,11 +49,14 @@ using UnityEngine.UI;
        
             rigid = GetComponent<Rigidbody2D>();
             anim = GetComponent<Animator>();
+      
+        
             currentBullet = 0;
             changeScale = 0;
             currentHP = MaxHp;
             gameManager = GameManager.instance;
             currentValue = maxValue;
+        key = 0;
            
     
                               
@@ -80,48 +88,56 @@ using UnityEngine.UI;
 
         private void OnTriggerEnter2D(Collider2D collision)
         {
-            if (collision.gameObject.CompareTag("AmmoPickUp"))
+        if (collision.gameObject.CompareTag("AmmoPickUp"))
+        {
+            currentBullet += AmmoPickUp;
+            Destroy(collision.gameObject);
+        }//AmmoPickUp
+        else if (collision.gameObject.CompareTag("ChangeScale"))
+        {
+            changeScale += changeScalePickUp;
+            Destroy(collision.gameObject);
+
+        }//ScaleChangePickUp
+        else if (collision.gameObject.CompareTag("EnemyBullet") && isProtect == false)
+        {
+            currentHP -= 5;
+        }
+        else if (collision.gameObject.CompareTag("trap") && isProtect == false)
+        {
+            currentHP -= 5;
+        }
+        else if (collision.gameObject.CompareTag("HPadd"))
+        {
+            if (currentHP == 100)
             {
-                currentBullet+= AmmoPickUp;
-                Destroy(collision.gameObject);
-            }//AmmoPickUp
-            else if (collision.gameObject.CompareTag("ChangeScale"))
-            {
-                changeScale += changeScalePickUp;
-                Destroy(collision.gameObject);
-                    
-            }//ScaleChangePickUp
-            else if (collision.gameObject.CompareTag("EnemyBullet")&&isProtect==false)
-            {
-                currentHP -= 5;
+                currentHP += 0;
             }
-            else if (collision.gameObject.CompareTag("trap")&&isProtect==false)
+            else if (currentHP < 100)
             {
-                currentHP -= 5;
+                currentHP += 5;
             }
-            else if (collision.gameObject.CompareTag("HPadd"))
-            {
-                if (currentHP == 100)
-                {
-                    currentHP += 0;
-                }else if (currentHP < 100)
-                {
-                    currentHP += 5;
-                }
-                Destroy(collision.gameObject);
-       
-            }
-           else if (collision.gameObject.CompareTag("coin"))
+            Destroy(collision.gameObject);
+
+        }
+        else if (collision.gameObject.CompareTag("coin"))
         {
             coin += 1;
             Destroy(collision.gameObject);
         }
-       
+        else if (collision.gameObject.CompareTag("key"))
+        {
+            key += 1;
+            Destroy(collision.gameObject);
+        }
+        
             
             
         } 
+  
 
   
+   
         private void attack()
         {
 
@@ -152,39 +168,46 @@ using UnityEngine.UI;
             
         }
 
-        private void projectSelf()
-    {
-        if (Input.GetKeyDown(KeyCode.Space) && currentValue > 0)
+        private void protectSelf()
         {
-            isProtect = true;
+            if (Input.GetKeyDown(KeyCode.Space) && currentValue > 0)
+            {
+                isProtect = true;
             
-        }
-        else if(Input.GetKeyUp(KeyCode.Space))
+            }
+            else if(Input.GetKeyUp(KeyCode.Space))
                 
-        {
-            isProtect = false;
+            {
+                isProtect = false;
+            }
         }
-    }
 
        public void Death()
-        {
+       {
             if (currentHP <= 0)
             {
 
-            gameManager.isLoose=true;
+            gameManager.isLoose = true;
         
                      
             }
-        }
-        private void Movement()
-        {
+       }
+       private void Movement()
+       {
        
             Vector2 pos = new Vector2();
             pos += (dir.normalized*speed)*Time.fixedDeltaTime;
             rigid.velocity = pos;
             
-	    }
-       
+	   }
+
+    private void hasKey()
+    {
+        if (key > 0)
+        {
+            door.haskey = true;
+        }
+    }
 	    private void Update()
         {
             attack();
@@ -206,7 +229,7 @@ using UnityEngine.UI;
             transform.localScale = new Vector2(1.0f, 1.0f);
             
         }
-        projectSelf();
+        protectSelf();
         if (currentValue <= 0) { isProtect = false; }
         
         if (isProtect == true)
@@ -218,6 +241,9 @@ using UnityEngine.UI;
         }
         int staStr =(int)currentValue;
         staText.text = staStr.ToString();
+        hasKey();
+
+
 
     }
 	    void FixedUpdate() {
