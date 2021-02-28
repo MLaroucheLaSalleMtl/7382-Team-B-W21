@@ -156,12 +156,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 300
-  jumpHeight: 8
   AmmoPower: 10
   bullet: {fileID: 4730157143474293557, guid: 59b55df4cd847234f883a41533c0abe5, type: 3}
+  isProtect: 0
+  inDoorArea: 0
+  hasKey: 0
+  characterMoving: 0
   currentBullet: 0
   changeScale: 0
   currentHP: 0
+  currentValue: 0
+  staText: {fileID: 0}
+  coin: 0
+  door: {fileID: 136213160180781918, guid: df611d9e826ee7745a3d6472ebf28ac9, type: 3}
+  ButtonDoor: {fileID: 8386760104002991347, guid: 0783efd4e15a3414b86cbb6c90380103, type: 3}
 --- !u!1 &1585165202295696046
 GameObject:
   m_ObjectHideFlags: 0

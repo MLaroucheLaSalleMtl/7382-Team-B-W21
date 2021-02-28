@@ -12,8 +12,11 @@ TagManager:
   - trap
   - HPadd
   - coin
-  - Undefined
-  - DoorArea
+  - key
+  - Door
+  - ButtonDoor
+  - DoorButton
+  - food
   layers:
   - Default
   - TransparentFX

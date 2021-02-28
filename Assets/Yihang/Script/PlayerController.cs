@@ -16,7 +16,7 @@ using UnityEngine.UI;
         public float AmmoPower = 10f; //bullet range
         public GameObject bullet;
         public bool isProtect = false;
-        public bool getKey = false;
+      
 
         private int AmmoPickUp=5;
         private int changeScalePickUp = 1;
@@ -25,7 +25,11 @@ using UnityEngine.UI;
         private GameManager gameManager;
         private float countDown = 0f;
         private float maxValue = 100;
-        private OpenDoor door;
+        public bool inDoorArea=false;
+        public bool hasKey = false;
+        public bool characterMoving = false;
+        public float maxHungryValue = 100;
+        
         
      
       
@@ -38,7 +42,10 @@ using UnityEngine.UI;
         [SerializeField] private float currentValue;
         [SerializeField] private Text staText;
         [SerializeField] private int coin=0;
-        [SerializeField] private int key ;
+        [SerializeField]private GameObject door;
+        [SerializeField] private GameObject ButtonDoor;
+        [SerializeField] private float current_hungryValue;
+        
 
 
 
@@ -56,10 +63,20 @@ using UnityEngine.UI;
             currentHP = MaxHp;
             gameManager = GameManager.instance;
             currentValue = maxValue;
-        key = 0;
-           
+            door = GameObject.FindGameObjectWithTag("Door");
+            ButtonDoor = GameObject.FindGameObjectWithTag("ButtonDoor");
+            current_hungryValue = maxHungryValue;
     
                               
+        }
+
+         private void openDoor()
+        {
+        if (hasKey == true && inDoorArea == true && Input.GetKeyDown(KeyCode.G))
+        {
+            Destroy(door);
+        }
+       
         }
   
         //character movement
@@ -67,10 +84,38 @@ using UnityEngine.UI;
         {
             dir = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
         
-	    }
+	    } //bullet move dir
 
-        //bullet move dir
-        public void OnRotate()
+
+    private void isMoving()
+    {
+
+        if (Input.GetAxisRaw("Horizontal") != 0 || Input.GetAxisRaw("Vertical") != 0)
+        {
+            characterMoving = true;
+        }
+        else if (Input.GetAxisRaw("Horizontal") == 0 || Input.GetAxisRaw("Vertical") == 0)
+        {
+            characterMoving = false;
+        }
+
+    }
+    private void saveMode()
+    {
+        if (current_hungryValue <= 20)
+        {
+            speed = 100;
+        }
+        else if (current_hungryValue > 20)
+        {
+
+            speed = 300;
+        }
+    }
+
+
+    //bullet move dir
+    public void OnRotate()
         {
             bulletDirection= new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
         
@@ -125,20 +170,50 @@ using UnityEngine.UI;
             coin += 1;
             Destroy(collision.gameObject);
         }
+        else if (collision.gameObject.CompareTag("Door"))
+        {
+            inDoorArea = true;
+        }
         else if (collision.gameObject.CompareTag("key"))
         {
-            key += 1;
+            hasKey = true;
             Destroy(collision.gameObject);
         }
+        else if (collision.gameObject.CompareTag("DoorButton"))
+        {
+            Destroy(ButtonDoor);
+        }
+        else if (collision.gameObject.CompareTag("food"))
+        {
+            if (current_hungryValue <= 90)
+            {
+                current_hungryValue += 10;
+            }
+            if (current_hungryValue > 90)
+            {
+                current_hungryValue = maxHungryValue;
+            }
+            Destroy(collision.gameObject);
+        }
+     
         
             
             
-        } 
-  
+        }
 
-  
-   
-        private void attack()
+
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        if (collision.gameObject.CompareTag("Door"))
+        {
+            inDoorArea = false;
+        }
+    }
+
+
+
+
+    private void attack()
         {
 
             if (Input.GetButtonDown("Fire1") && currentBullet > 0 )
@@ -161,7 +236,7 @@ using UnityEngine.UI;
                 changeScale--;
 
                 transform.localScale = new Vector2(0.5f, 0.5f);
-                countDown = 5f;
+                countDown = 10f;
              
 
             }
@@ -184,7 +259,7 @@ using UnityEngine.UI;
 
        public void Death()
        {
-            if (currentHP <= 0)
+            if (currentHP <= 0||current_hungryValue<=0)
             {
 
             gameManager.isLoose = true;
@@ -201,13 +276,6 @@ using UnityEngine.UI;
             
 	   }
 
-    private void hasKey()
-    {
-        if (key > 0)
-        {
-            door.haskey = true;
-        }
-    }
 	    private void Update()
         {
             attack();
@@ -218,6 +286,8 @@ using UnityEngine.UI;
             }
             OnMove();
             Death();
+
+            
 
         if (countDown > 0)
         {
@@ -241,7 +311,19 @@ using UnityEngine.UI;
         }
         int staStr =(int)currentValue;
         staText.text = staStr.ToString();
-        hasKey();
+        openDoor();
+        isMoving();
+        if (characterMoving == true)
+        {
+            current_hungryValue -= Time.deltaTime/2;
+        } else if (characterMoving == false&&current_hungryValue<maxHungryValue)
+        {
+            current_hungryValue += Time.deltaTime / 6; 
+        }
+
+        saveMode();
+
+        
 
 
 

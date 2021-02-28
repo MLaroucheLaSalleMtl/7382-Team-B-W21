@@ -9,6 +9,7 @@ public class GameManager : MonoBehaviour
     public GameObject Player;
 
 
+
     // Start is called before the first frame update
 
     private void Awake()
@@ -26,6 +27,7 @@ public class GameManager : MonoBehaviour
     void Start()
     {
         Player = GameObject.FindGameObjectWithTag("Player");
+      
     }
 
     //Update is called once per frame
@@ -39,6 +41,7 @@ public class GameManager : MonoBehaviour
         }
     }
     
+
 
     void Update()
     {

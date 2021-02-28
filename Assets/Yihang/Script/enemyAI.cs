@@ -78,7 +78,7 @@ public class enemyAI : MonoBehaviour
     {
 
         if (gameManager.isLoose==false) {
-            float distanceFromPlayer = Vector2.Distance(player.position, transform.position);
+            float distanceFromPlayer = (player.position-transform.position).magnitude;
             if (distanceFromPlayer < 10 && distanceFromPlayer > shootRange)
             {
                 transform.position = Vector2.MoveTowards(this.transform.position, player.position, enemeySpeed * Time.deltaTime);
