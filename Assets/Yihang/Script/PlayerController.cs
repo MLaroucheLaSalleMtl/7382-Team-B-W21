@@ -45,8 +45,11 @@ using UnityEngine.UI;
         [SerializeField]private GameObject door;
         [SerializeField] private GameObject ButtonDoor;
         [SerializeField] private float current_hungryValue;
-        
 
+
+        [SerializeField] private GameObject winMessage;
+        [SerializeField] private int npcCount = 0;
+        [SerializeField] private Text endGameMessage;
 
 
 
@@ -66,6 +69,7 @@ using UnityEngine.UI;
             door = GameObject.FindGameObjectWithTag("Door");
             ButtonDoor = GameObject.FindGameObjectWithTag("ButtonDoor");
             current_hungryValue = maxHungryValue;
+            winMessage.SetActive(false);
     
                               
         }
@@ -133,6 +137,12 @@ using UnityEngine.UI;
 
         private void OnTriggerEnter2D(Collider2D collision)
         {
+
+        if(collision.gameObject.CompareTag("NPC"))
+        {
+            npcCount += 1;
+            Destroy(collision.gameObject);
+        }
         if (collision.gameObject.CompareTag("AmmoPickUp"))
         {
             currentBullet += AmmoPickUp;
@@ -152,6 +162,10 @@ using UnityEngine.UI;
         {
             currentHP -= 5;
         }
+        //else if (collision.gameObject.CompareTag("EnemyMelee") && isProtect == false)
+        //{
+        //    currentHP -= 5;
+        //}
         else if (collision.gameObject.CompareTag("HPadd"))
         {
             if (currentHP == 100)
@@ -200,6 +214,18 @@ using UnityEngine.UI;
             
             
         }
+
+
+    public void IsWin(int npcCount)
+    {
+
+        endGameMessage.text = "You Win!!";
+        if(npcCount == 3)
+        {
+            winMessage.SetActive(true);
+            Time.timeScale = 0;
+        }
+    }
 
 
     private void OnTriggerExit2D(Collider2D collision)
@@ -279,6 +305,7 @@ using UnityEngine.UI;
 	    private void Update()
         {
             attack();
+            IsWin(npcCount);
             reduceScale();
             if (Input.GetAxisRaw("Horizontal")!=0||Input.GetAxisRaw("Vertical")!=0)
             {
@@ -334,5 +361,17 @@ using UnityEngine.UI;
             Movement();
             
         }
+
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.tag == "NPC")
+        {
+            //Destroy(collision.gameObject);
+            collision.gameObject.SetActive(false);
+            npcCount++;
+           
+        }
     }
+}
 

@@ -163,7 +163,7 @@ MonoBehaviour:
   hasKey: 0
   characterMoving: 0
   maxHungryValue: 100
-  currentBullet: 0
+  currentBullet: 5
   changeScale: 0
   currentHP: 0
   currentValue: 0
