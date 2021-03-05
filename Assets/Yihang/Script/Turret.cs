@@ -30,14 +30,12 @@ public class Turret : MonoBehaviour
         {
             float distanceFromPlayer = Vector2.Distance(player.position, transform.position);
 
-            Vector2 dir = player.position - transform.position;
-            float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
-
+   
+            Vector2 rotateAngle = (transform.position-player.position).normalized;
 
             if (distanceFromPlayer <= followRange && nextShootTime < Time.time)
             {
-
-                transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
+                transform.right = rotateAngle;
                 GameObject _enemyBullet = Instantiate(enemyBullet, turretRigid.position, Quaternion.identity);
                 nextShootTime = Time.time + shootRate;
 
