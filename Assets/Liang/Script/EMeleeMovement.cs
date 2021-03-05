@@ -136,7 +136,7 @@ public class EMeleeMovement : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if(collision.gameObject.name == "Player")
+        if (collision.gameObject.name == "Main Character")
         {
             //Destroy(collision.gameObject);
             collision.gameObject.SetActive(false);

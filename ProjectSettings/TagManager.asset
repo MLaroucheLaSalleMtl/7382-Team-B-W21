@@ -17,6 +17,9 @@ TagManager:
   - ButtonDoor
   - DoorButton
   - food
+  - DoorArea
+  - EnemyMelee
+  - NPC
   layers:
   - Default
   - TransparentFX
