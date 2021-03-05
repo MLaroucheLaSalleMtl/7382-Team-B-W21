@@ -78,7 +78,7 @@ public class enemyAI : MonoBehaviour
     {
 
         if (gameManager.isLoose==false) {
-            float distanceFromPlayer = (player.position-transform.position).magnitude;
+            float distanceFromPlayer =Vector2.Distance(player.position,transform.position);
             if (distanceFromPlayer < 10 && distanceFromPlayer > shootRange)
             {
                 transform.position = Vector2.MoveTowards(this.transform.position, player.position, enemeySpeed * Time.deltaTime);
@@ -108,6 +108,7 @@ public class enemyAI : MonoBehaviour
 
        
     }
+
 
 
     // Update is called once per frame

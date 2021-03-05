@@ -118,7 +118,7 @@ Rigidbody2D:
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
-  m_Mass: 1
+  m_Mass: 0.1
   m_LinearDrag: 0
   m_AngularDrag: 0.05
   m_GravityScale: 0
@@ -162,6 +162,7 @@ MonoBehaviour:
   inDoorArea: 0
   hasKey: 0
   characterMoving: 0
+  maxHungryValue: 100
   currentBullet: 0
   changeScale: 0
   currentHP: 0
@@ -170,6 +171,7 @@ MonoBehaviour:
   coin: 0
   door: {fileID: 136213160180781918, guid: df611d9e826ee7745a3d6472ebf28ac9, type: 3}
   ButtonDoor: {fileID: 8386760104002991347, guid: 0783efd4e15a3414b86cbb6c90380103, type: 3}
+  current_hungryValue: 0
 --- !u!1 &1585165202295696046
 GameObject:
   m_ObjectHideFlags: 0
