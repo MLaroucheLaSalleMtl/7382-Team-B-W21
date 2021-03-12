@@ -5,6 +5,7 @@ using UnityEngine;
 public class EnemyBulleyBehavriou : MonoBehaviour
 {
     Rigidbody2D enemyBulletRigid;
+    Vector2 bulletDir = new Vector2(0, -1);
 
     public Transform player;
     private float bulletSpeed=10f;
@@ -13,6 +14,9 @@ public class EnemyBulleyBehavriou : MonoBehaviour
     {
         enemyBulletRigid = GetComponent<Rigidbody2D>();
         player = GameObject.FindGameObjectWithTag("Player").transform;
+
+        bulletDir = (player.transform.position - transform.position).normalized * bulletSpeed;
+        enemyBulletRigid.velocity = new Vector2(bulletDir.x, bulletDir.y);
         Destroy(this.gameObject, 2);
     }
     private void OnTriggerEnter2D(Collider2D collision)
@@ -24,9 +28,11 @@ public class EnemyBulleyBehavriou : MonoBehaviour
         }
     }
 
+    
+
     // Update is called once per frame
     void Update()
     {
-        transform.position = Vector2.MoveTowards(this.transform.position, player.position, bulletSpeed* Time.deltaTime);
+    
     }
 }

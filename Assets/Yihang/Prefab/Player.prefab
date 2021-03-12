@@ -32,7 +32,7 @@ Transform:
   m_LocalPosition: {x: -8.356876, y: -0.6333992, z: -4.9804688}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
-  - {fileID: 1582713476107550816}
+  - {fileID: 8925164519800125934}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -167,12 +167,17 @@ MonoBehaviour:
   changeScale: 0
   currentHP: 0
   currentValue: 0
-  staText: {fileID: 0}
   coin: 0
   door: {fileID: 136213160180781918, guid: df611d9e826ee7745a3d6472ebf28ac9, type: 3}
   ButtonDoor: {fileID: 8386760104002991347, guid: 0783efd4e15a3414b86cbb6c90380103, type: 3}
   current_hungryValue: 0
---- !u!1 &1585165202295696046
+  npcCount: 0
+  healthBar: {fileID: 0}
+  dBar: {fileID: 0}
+  hBar: {fileID: 0}
+  ammoText: {fileID: 0}
+  coinText: {fileID: 0}
+--- !u!1 &7652615516252556131
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -180,52 +185,77 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 1582713476107550816}
-  - component: {fileID: 1522278953575793068}
-  m_Layer: 0
-  m_Name: Collider
+  - component: {fileID: 8925164519800125934}
+  - component: {fileID: 3041291581148969954}
+  m_Layer: 10
+  m_Name: MinimapIcon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
---- !u!4 &1582713476107550816
+  m_IsActive: 1
+--- !u!4 &8925164519800125934
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1585165202295696046}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_GameObject: {fileID: 7652615516252556131}
+  m_LocalRotation: {x: 0, y: 0, z: -0.7071068, w: 0.7071068}
+  m_LocalPosition: {x: -0.04, y: 0.06, z: 0}
+  m_LocalScale: {x: 0.455, y: 0.455, z: 0.455}
   m_Children: []
   m_Father: {fileID: 1578776492683829494}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!61 &1522278953575793068
-BoxCollider2D:
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: -90}
+--- !u!212 &3041291581148969954
+SpriteRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1585165202295696046}
+  m_GameObject: {fileID: 7652615516252556131}
   m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0.000000059604645, y: 0.016061068}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0, y: 0}
-    oldSize: {x: 0, y: 0}
-    newSize: {x: 0, y: 0}
-    adaptiveTilingThreshold: 0
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
-  serializedVersion: 2
-  m_Size: {x: 0.46034765, y: 0.96787786}
-  m_EdgeRadius: 0
+  m_CastShadows: 0
+  m_ReceiveShadows: 0
+  m_DynamicOccludee: 1
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 0
+  m_RayTraceProcedural: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 0
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_Sprite: {fileID: 21300000, guid: 5988454893b067c4db84565afbb2310c, type: 3}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_FlipX: 0
+  m_FlipY: 0
+  m_DrawMode: 0
+  m_Size: {x: 1, y: 1}
+  m_AdaptiveModeThreshold: 0.5
+  m_SpriteTileMode: 0
+  m_WasSpriteAssigned: 1
+  m_MaskInteraction: 0
+  m_SpriteSortPoint: 0
