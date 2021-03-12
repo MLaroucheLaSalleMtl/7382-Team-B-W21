@@ -1,19 +1,17 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
 
 
-    public class PlayerController : MonoBehaviour
-    {
-        Rigidbody2D rigid;
+public class PlayerController : MonoBehaviour
+{
+    Rigidbody2D rigid;
         Animator anim;
         Vector2 dir = new Vector2(0,-1); //Character direction
         Vector2 bulletDirection = new Vector2(0, -1); //shoot where your aim at (facing)
 
         public float speed = 300.0f; //Character moving
-        public float AmmoPower = 10f; //bullet range
+        public float AmmoPower = 500f; //bullet range
         public GameObject bullet;
         public bool isProtect = false;
       
@@ -40,22 +38,25 @@ using UnityEngine.UI;
         [SerializeField] private int changeScale = 0;
         [SerializeField] private float currentHP;
         [SerializeField] private float currentValue;
-        [SerializeField] private Text staText;
         [SerializeField] private int coin=0;
         [SerializeField]private GameObject door;
         [SerializeField] private GameObject ButtonDoor;
         [SerializeField] private float current_hungryValue;
-
-
-        [SerializeField] private GameObject winMessage;
         [SerializeField] private int npcCount = 0;
-        [SerializeField] private Text endGameMessage;
+        [SerializeField] private hp healthBar;
+        [SerializeField] private hp dBar;
+        [SerializeField] private hp hBar;
+        [SerializeField] private Text ammoText;
+        [SerializeField] private Text coinText;
 
 
 
-   
-        // Start is called before the first frame update
-        void Start() {
+
+
+
+
+    // Start is called before the first frame update
+    void Start() {
        
             rigid = GetComponent<Rigidbody2D>();
             anim = GetComponent<Animator>();
@@ -64,15 +65,22 @@ using UnityEngine.UI;
             currentBullet = 0;
             changeScale = 0;
             currentHP = MaxHp;
+            healthBar.MaxHealth(MaxHp);
             gameManager = GameManager.instance;
             currentValue = maxValue;
+            dBar.MaxDefend(maxValue);
             door = GameObject.FindGameObjectWithTag("Door");
             ButtonDoor = GameObject.FindGameObjectWithTag("ButtonDoor");
             current_hungryValue = maxHungryValue;
-            winMessage.SetActive(false);
+            hBar.maxEnegry(maxHungryValue);
+          
+       
+        
     
                               
         }
+
+       
 
          private void openDoor()
         {
@@ -157,24 +165,25 @@ using UnityEngine.UI;
         else if (collision.gameObject.CompareTag("EnemyBullet") && isProtect == false)
         {
             currentHP -= 5;
+            healthBar.getHealth(currentHP);
+
         }
         else if (collision.gameObject.CompareTag("trap") && isProtect == false)
         {
             currentHP -= 5;
+            healthBar.getHealth(currentHP);
         }
-        //else if (collision.gameObject.CompareTag("EnemyMelee") && isProtect == false)
-        //{
-        //    currentHP -= 5;
-        //}
         else if (collision.gameObject.CompareTag("HPadd"))
         {
             if (currentHP == 100)
             {
                 currentHP += 0;
+                healthBar.getHealth(currentHP);
             }
             else if (currentHP < 100)
             {
                 currentHP += 5;
+                healthBar.getHealth(currentHP);
             }
             Destroy(collision.gameObject);
 
@@ -202,10 +211,12 @@ using UnityEngine.UI;
             if (current_hungryValue <= 90)
             {
                 current_hungryValue += 10;
+                hBar.getEnegry(current_hungryValue);
             }
             if (current_hungryValue > 90)
             {
                 current_hungryValue = maxHungryValue;
+                hBar.getEnegry(current_hungryValue);
             }
             Destroy(collision.gameObject);
         }
@@ -216,16 +227,7 @@ using UnityEngine.UI;
         }
 
 
-    public void IsWin(int npcCount)
-    {
 
-        endGameMessage.text = "You Win!!";
-        if(npcCount == 3)
-        {
-            winMessage.SetActive(true);
-            Time.timeScale = 0;
-        }
-    }
 
 
     private void OnTriggerExit2D(Collider2D collision)
@@ -257,14 +259,13 @@ using UnityEngine.UI;
   
         private void reduceScale()
         {
-            if (Input.GetKeyDown(KeyCode.J) && changeScale > 0)
+            if (Input.GetKeyDown(KeyCode.E) && changeScale > 0)
             {
                 changeScale--;
 
                 transform.localScale = new Vector2(0.5f, 0.5f);
                 countDown = 10f;
              
-
             }
             
         }
@@ -293,7 +294,17 @@ using UnityEngine.UI;
                      
             }
        }
-       private void Movement()
+
+    public void IsWin(int npcCount)
+    {
+
+        if (npcCount == 3)
+        {
+            gameManager.isWin = true;
+        }
+    }
+
+    private void Movement()
        {
        
             Vector2 pos = new Vector2();
@@ -332,25 +343,31 @@ using UnityEngine.UI;
         if (isProtect == true)
         {
             currentValue -= Time.deltaTime*20;
-        }else if (isProtect == false&&currentValue<maxValue)
+            dBar.getDefend(currentValue);
+        }
+        else if (isProtect == false&&currentValue<maxValue)
         {
             currentValue += Time.deltaTime*20;
+            dBar.getDefend(currentValue);
         }
-        int staStr =(int)currentValue;
-        staText.text = staStr.ToString();
         openDoor();
         isMoving();
         if (characterMoving == true)
         {
-            current_hungryValue -= Time.deltaTime/2;
+            current_hungryValue -= Time.deltaTime/1.2f;
+            hBar.getEnegry(current_hungryValue);
         } else if (characterMoving == false&&current_hungryValue<maxHungryValue)
         {
-            current_hungryValue += Time.deltaTime / 6; 
+            current_hungryValue += Time.deltaTime / 6;
+            hBar.getEnegry(current_hungryValue);
         }
 
         saveMode();
+        int ammoStr =(int)currentBullet;
+        ammoText.text = ammoStr.ToString();
+        int coinStr = (int)coin;
+        coinText.text = coinStr.ToString();
 
-        
 
 
 
