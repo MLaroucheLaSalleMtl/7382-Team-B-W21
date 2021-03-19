@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 4246547543367815111}
   m_Layer: 0
   m_Name: trap
-  m_TagString: trap
+  m_TagString: hpLoose
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

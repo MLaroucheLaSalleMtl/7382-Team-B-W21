@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class hp : MonoBehaviour
 {
@@ -10,10 +11,9 @@ public class hp : MonoBehaviour
     public Slider defendSlider;
     public Slider hungrySlider;
     public GameObject pauseMenu;
-
-
-
-
+    //public GameObject winMenu;
+    private GameManager gm;
+  
     public void MaxHealth(float health)
     {
         hpSlider.maxValue = health;
@@ -53,27 +53,51 @@ public class hp : MonoBehaviour
     {
         hungrySlider.value = enegry;
     }
-    // Start is called before the first frame update
+    //Start is called before the first frame update
 
-    public void pauseDisplay()
+  
+
+    public void back()
     {
-        if (Input.GetKeyDown(KeyCode.Escape))
-        {
-            pauseMenu.SetActive(true);
-            Time.timeScale = 0;
-        }
-        
+
+        pauseMenu.SetActive(false);
+        Time.timeScale = 1f;
+        gm.canShoot = true;
+    }
+
+    public void restart()
+    {
+        SceneManager.LoadScene("level1");
+        Time.timeScale = 1;
+    }
+
+    public void backMainMenu()
+    {
+        SceneManager.LoadScene("Start menu");
+    }
+
+    public void quit()
+    {
+#if UNITY_EDITOR
+        UnityEditor.EditorApplication.isPlaying = false;
+        #else
+        Application.Quit();
+#endif
+     
     }
     void Start()
     {
         pauseMenu.SetActive(false);
+        gm = GameManager.instance;
+        Time.timeScale = 1;
     }
    
     // Update is called once per frame
     void Update()
     {
 
-        pauseDisplay();
+  
+       
       
     }
 }

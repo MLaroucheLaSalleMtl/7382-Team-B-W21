@@ -1,19 +1,19 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Tilemaps;
 
 public class bulletBehaviour : MonoBehaviour
 {
 
     float countDown = 5f;
-  
-    
+
     // Start is called before the first frame update
 
     void Start()
     {
-      
         
+
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {
@@ -23,10 +23,10 @@ public class bulletBehaviour : MonoBehaviour
         }
     }
 
-
     //Update is called once per frame
     void Update()
     {
+        
         if (countDown > 0)
         {
             countDown -= Time.fixedDeltaTime;

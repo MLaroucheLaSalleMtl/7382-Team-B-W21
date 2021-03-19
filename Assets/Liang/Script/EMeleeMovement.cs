@@ -128,7 +128,7 @@ public class EMeleeMovement : MonoBehaviour
             reloadTime -= Time.deltaTime;
             if(reloadTime <0)
             {
-                SceneManager.LoadScene("Liang-level1");
+                SceneManager.LoadScene("level1");
                 thePlayer.SetActive(true);
             }
         }
@@ -136,7 +136,7 @@ public class EMeleeMovement : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.name == "Main Character")
+        if (collision.gameObject.name == "--Main Character--")
         {
             //Destroy(collision.gameObject);
             collision.gameObject.SetActive(false);

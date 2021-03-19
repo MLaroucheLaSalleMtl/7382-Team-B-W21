@@ -7,9 +7,7 @@ TagManager:
   - Bullet
   - AmmoPickUp
   - ChangeScale
-  - EnemyBullet
   - Enemy
-  - trap
   - HPadd
   - coin
   - key
@@ -20,6 +18,10 @@ TagManager:
   - DoorArea
   - EnemyMelee
   - NPC
+  - hpLoose
+  - EnemyBullet
+  - Destructable
+  - diamond
   layers:
   - Default
   - TransparentFX
@@ -32,7 +34,7 @@ TagManager:
   - Enemy
   - RenderBoth
   - RenderMinimap
-  - 
+  - Destructable
   - 
   - 
   - 

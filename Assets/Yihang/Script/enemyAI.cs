@@ -11,8 +11,7 @@ public class enemyAI : MonoBehaviour
     private Vector2 moveDirection;
     private float changeDir = 10f;
     private GameManager gameManager;
-    //Vector2 bulletDirection = new Vector2(0, -1);
-    //private float bulletSpeed = 10f;
+
 
 
 
