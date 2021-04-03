@@ -26,11 +26,13 @@ public class enemyAI : MonoBehaviour
     [SerializeField]private float currentHP;
     [SerializeField] private bool isVertical;
     [SerializeField] private GameObject coin;
+    [SerializeField] private GameObject effect;
+    [SerializeField] AudioSource shootAudio;
 
 
 
 
-    
+
     // Start is called before the first frame update
     void Start()
     {
@@ -49,7 +51,7 @@ public class enemyAI : MonoBehaviour
         changeDir=10f;
         gameManager = GameManager.instance;
 
-        
+        shootAudio = GetComponent<AudioSource>();
 
 
     }
@@ -58,6 +60,7 @@ public class enemyAI : MonoBehaviour
         if (collision.gameObject.CompareTag("Bullet"))
         {
             currentHP -=50;
+            GameObject _effect = Instantiate(effect, enemyRigid.position, Quaternion.identity);
 
         }
     }
@@ -87,6 +90,8 @@ public class enemyAI : MonoBehaviour
 
                 GameObject _enemyBullet = Instantiate(enemyBullet, enemyRigid.position, Quaternion.identity);
                 nextShootTime = Time.time + shootRate;
+                shootAudio.Play();
+
 
             }
             else if (distanceFromPlayer >= 10)

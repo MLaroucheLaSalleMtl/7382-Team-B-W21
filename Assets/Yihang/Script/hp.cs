@@ -65,9 +65,10 @@ public class hp : MonoBehaviour
         gm.canShoot = true;
     }
 
+
     public void restart()
     {
-        SceneManager.LoadScene("level1");
+        SceneManager.LoadScene("Liang-level1 1");
         Time.timeScale = 1;
     }
 
@@ -75,6 +76,7 @@ public class hp : MonoBehaviour
     {
         SceneManager.LoadScene("Start menu");
     }
+    
 
     public void quit()
     {

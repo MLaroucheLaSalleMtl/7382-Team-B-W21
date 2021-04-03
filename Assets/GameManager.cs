@@ -57,6 +57,7 @@ public class GameManager : MonoBehaviour
 
 
 
+
     [SerializeField] private GameObject pauseMenu;
     
     
@@ -70,6 +71,8 @@ public class GameManager : MonoBehaviour
     [SerializeField] private GameObject endMenu;
     [SerializeField] private GameObject winMenu;
     [SerializeField] private Text ammoDisplay;
+    [SerializeField] private GameObject reminder;
+
 
 
 
@@ -110,6 +113,7 @@ public class GameManager : MonoBehaviour
 
         winMenu.SetActive(false);
 
+        reminder.SetActive(false);
 
     }
 
@@ -133,7 +137,9 @@ public class GameManager : MonoBehaviour
     {
         currentHP -=5;
         healthBar.getHealth(currentHP);
+    
     }
+     
 
     public void hpAdd()
     {
@@ -229,14 +235,7 @@ public class GameManager : MonoBehaviour
 
 
 
-    private void openDoor() //keydoor open
-    {
-        if (hasKey == true && inDoorArea == true && Input.GetKeyDown(KeyCode.G))
-        {
-            Destroy(door);
-        }
-
-    }
+  
     private void protectSelf() //defent function
     {
         if (Input.GetKeyDown(KeyCode.Space) && currentValue > 0)
@@ -251,12 +250,13 @@ public class GameManager : MonoBehaviour
         }
     }
 
+
+
     void Update()
     {
         gameOver();
         Win();
         pauseDisplay();
-        openDoor();
         protectSelf();
         if (currentValue <= 0) { isProtect = false; }
 
@@ -275,6 +275,17 @@ public class GameManager : MonoBehaviour
         int coinStr = (int)coin;
         coinText.text = coinStr.ToString();
         ammoDisplay.text = ammo.ToString();
+
+        if (inDoorArea == true && hasKey == false)
+        {
+            reminder.SetActive(true);
+        }
+        else if (inDoorArea == false)
+        {
+            reminder.SetActive(false);
+        }
+
+
 
 
     }

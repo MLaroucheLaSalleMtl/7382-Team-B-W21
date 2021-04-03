@@ -14,6 +14,7 @@ public class Turret : MonoBehaviour
     [SerializeField] private Transform player;
     [SerializeField] private float followRange=5;
     [SerializeField] private GameObject enemyBullet;
+    [SerializeField] AudioSource shootAudio;
 
     // Start is called before the first frame update
     void Start()
@@ -21,7 +22,7 @@ public class Turret : MonoBehaviour
         turretRigid = GetComponent<Rigidbody2D>();
         player = GameObject.FindGameObjectWithTag("Player").transform;
         gameManager = GameManager.instance;
-
+        shootAudio = GetComponent<AudioSource>();
     }
 
     private void turretShoot()
@@ -38,6 +39,7 @@ public class Turret : MonoBehaviour
                 transform.right = rotateAngle;
                 GameObject _enemyBullet = Instantiate(enemyBullet, turretRigid.position, Quaternion.identity);
                 nextShootTime = Time.time + shootRate;
+                shootAudio.Play();
 
             }
         }

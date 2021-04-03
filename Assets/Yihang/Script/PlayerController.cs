@@ -2,7 +2,6 @@ using UnityEngine;
 using UnityEngine.UI;
 
 
-
 public class PlayerController : MonoBehaviour
 {
     private GameManager gameManager;
@@ -22,6 +21,8 @@ public class PlayerController : MonoBehaviour
     public GameObject ammo;
     [SerializeField] private int currentAmmo = 0;
     public GameObject stone;
+    private float shootrate=0.2f;
+    private float nextShootTime;
 
     [Header("Scale system")]
     [SerializeField] private int changeScalePickUp = 1;
@@ -35,6 +36,18 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private Text ammoText;
     [SerializeField] private int npcCount = 0;
 
+    private int keyNumber = 0;
+
+    [Header("Player hurt effect")]
+    private SpriteRenderer sr;
+    private Color original;
+    private float effectTimer = 0.2f;
+
+     //sound effect
+    [SerializeField] AudioSource pickUpAudio;
+    [SerializeField] AudioSource saveAudio;
+
+
 
 
     // Start is called before the first frame update
@@ -45,16 +58,16 @@ public class PlayerController : MonoBehaviour
         currentAmmo = 500;
         currentChangeScale = 0;
         gameManager = GameManager.instance;
-        ButtonDoor = GameObject.FindGameObjectWithTag("ButtonDoor");                              
+        ButtonDoor = GameObject.FindGameObjectWithTag("ButtonDoor");
+        sr = GetComponent<SpriteRenderer>();
+        original = sr.color;
+        //pickUpAudio= GetComponent<AudioSource>();
+
     }
 
     private void Update()
     {
-        //to shoot stone
-        //if (Input.GetButtonDown("Fire2"))
-        //{
-        //    Instantiate(stone, transform.position, Quaternion.identity);
-        //}
+
 
         attack();
         IsWin(npcCount);
@@ -89,8 +102,11 @@ public class PlayerController : MonoBehaviour
 
         saveMode();
         gameManager.getAmmo(currentAmmo);
-        //int ammoStr = (int)currentBullet;
-        //ammoText.text = ammoStr.ToString();
+        if (keyNumber <= 0)
+        {
+            gameManager.hasKey = false;
+        }
+      
 
     }
 
@@ -108,41 +124,56 @@ public class PlayerController : MonoBehaviour
         {
             currentAmmo += 5;
             Destroy(collision.gameObject);
+            pickUpAudio.Play();
         }//AmmoPickUp
         else if (collision.gameObject.CompareTag("ChangeScale"))
         {
             currentChangeScale += changeScalePickUp;
             Destroy(collision.gameObject);
+            pickUpAudio.Play();
 
         }//ScaleChangePickUp
         else if (collision.gameObject.CompareTag("hpLoose") && gameManager.isProtect == false)
         {
             gameManager.hpLoose();
+            hurtEffect(effectTimer);
         }
         else if (collision.gameObject.CompareTag("HPadd"))
         {
             gameManager.hpAdd();
             Destroy(collision.gameObject);
+            pickUpAudio.Play();
 
         }
         else if (collision.gameObject.CompareTag("coin"))
         {
             gameManager.coinCollect();
             Destroy(collision.gameObject);
+            pickUpAudio.Play();
+
         }
         else if (collision.gameObject.CompareTag("diamond"))
         {
             gameManager.diamondCollect();
             Destroy(collision.gameObject);
+            pickUpAudio.Play();
+
         }
         else if (collision.gameObject.CompareTag("Door"))
         {
             gameManager.inDoorArea = true;
+            if (gameManager.inDoorArea == true && gameManager.hasKey == true)
+           {
+                keyNumber -= 1;
+                Destroy(collision.gameObject);
+           }
         }
         else if (collision.gameObject.CompareTag("key"))
         {
+            keyNumber += 1;
             gameManager.hasKey = true;
             Destroy(collision.gameObject);
+            pickUpAudio.Play();
         }
         else if (collision.gameObject.CompareTag("DoorButton"))
         {
@@ -152,6 +183,7 @@ public class PlayerController : MonoBehaviour
         {
             gameManager.enegryAdd();
             Destroy(collision.gameObject);
+            pickUpAudio.Play();
         }
 
     }
@@ -169,12 +201,25 @@ public class PlayerController : MonoBehaviour
         if (collision.gameObject.tag == "NPC")
         {
             Destroy(collision.gameObject);
-            collision.gameObject.SetActive(false);
+            //collision.gameObject.SetActive(false);
             npcCount++;
+            saveAudio.Play(); 
+
+
+
 
         }
     }
 
+    private void hurtEffect(float time)
+    {
+        sr.color = Color.red;
+        Invoke("resetEffect", time);
+    }
+    private void resetEffect()
+    {
+        sr.color = original;
+    }
 
 
     //character movement
@@ -229,18 +274,20 @@ public class PlayerController : MonoBehaviour
     private void attack()
     {
 
-         if (Input.GetButtonDown("Fire1")&&currentAmmo>0 &&gameManager.canShoot == true )
+         if (Input.GetButtonDown("Fire1")&&currentAmmo>0 &&gameManager.canShoot == true&& nextShootTime < Time.time)
          {
-             currentAmmo--;
+            currentAmmo--;
+            GameObject bulletRing = Instantiate(ammo, myRigidbody.position, Quaternion.identity);
+            bulletRing.GetComponent<Rigidbody2D>().AddForce(bulletDirection * ammoRange, ForceMode2D.Impulse);
+            nextShootTime = Time.time +shootrate;
+            //shootAudio.Play();
 
-            
-             GameObject bulletRing = Instantiate(ammo, myRigidbody.position, Quaternion.identity);
-             bulletRing.GetComponent<Rigidbody2D>().AddForce(bulletDirection * ammoRange, ForceMode2D.Impulse);
-                
-         }
+        }
          else if (Input.GetButtonDown("Fire2"))
         {
-            Instantiate(stone, transform.position, Quaternion.identity);
+            //Instantiate(stone, myRigidbody.position, Quaternion.identity);
+            GameObject stoneCircle = Instantiate(stone, myRigidbody.position, Quaternion.identity);
+            stoneCircle.GetComponent<Rigidbody2D>().AddForce(bulletDirection * ammoRange, ForceMode2D.Impulse);
         }
     }
 

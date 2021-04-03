@@ -5,36 +5,69 @@ using UnityEngine.Tilemaps;
 
 public class DestructibleTiles : MonoBehaviour
 {
-    public Tilemap DestructibleTilemap;
+    public Tilemap destructibleTilemap;
     public int health;
+    //public float countDownTimer = 20f;
+    public bool isContact = false;
 
     private void Start()
     {
-        DestructibleTilemap = GetComponent<Tilemap>();
+        destructibleTilemap = GetComponent<Tilemap>();
     }
 
     private void Update()
     {
-        if (health <= 0)
-        {
-            Destroy(gameObject);
-        }
+
+        //if (isContact)
+        //{
+        //    countDownTimer -= Time.fixedDeltaTime;
+        //}
+        //else if (health <= 0)
+        //{
+        //    Destroy(gameObject);
+        //}
     }
 
-    private void OnCollisionEnter2D(Collision2D collision)
+    private void OnContact(Collider2D collision)
+    {
+        if(collision.gameObject.CompareTag("Player"))
+        {
+            isContact = true;
+        }
+    }
+    private void OnCollisionStay2D(Collision2D collision)
     {
         if (collision.gameObject.CompareTag("Player"))
         {
-            Vector3 hitPosition = Vector3.zero;
+            isContact = true;
+            
 
-            foreach (ContactPoint2D hit in collision.contacts)
+            if (Input.GetButtonDown("Fire3"))
             {
-                //Get the positions of the contact where it belongs to the correct tile
-                hitPosition.x = hit.point.x - 0.01f * hit.normal.x;
-                hitPosition.y = hit.point.y - 0.01f * hit.normal.y;
-                //Set the tile in the position to disappear
-                DestructibleTilemap.SetTile(DestructibleTilemap.WorldToCell(hitPosition), null);
+                Vector3 hitPosition = Vector3.zero;
+
+                foreach (ContactPoint2D hit in collision.contacts)
+                {
+                    //Get the positions of the contact where it belongs to the correct tile
+                    hitPosition.x = hit.point.x + 0.01f * hit.normal.x;
+                    hitPosition.y = hit.point.y + 0.01f * hit.normal.y;
+                    //Set the tile in the position to disappear
+                    destructibleTilemap.SetTile(destructibleTilemap.WorldToCell(hitPosition), null);
+                }
+
+                isContact = false;
             }
         }
+
+
     }
+
+    private void OnCollisionExit2D(Collision2D collision)
+    {
+        if(collision.gameObject.CompareTag("Player"))
+        {
+            isContact = false;
+        }
+    }
+
 }

@@ -22,6 +22,8 @@ TagManager:
   - EnemyBullet
   - Destructable
   - diamond
+  - Destruct
+  - Event
   layers:
   - Default
   - TransparentFX

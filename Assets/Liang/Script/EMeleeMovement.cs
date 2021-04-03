@@ -128,7 +128,7 @@ public class EMeleeMovement : MonoBehaviour
             reloadTime -= Time.deltaTime;
             if(reloadTime <0)
             {
-                SceneManager.LoadScene("level1");
+                SceneManager.LoadScene("Liang-level1 1");
                 thePlayer.SetActive(true);
             }
         }

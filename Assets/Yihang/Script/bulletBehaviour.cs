@@ -7,12 +7,15 @@ public class bulletBehaviour : MonoBehaviour
 {
 
     float countDown = 5f;
+    [SerializeField] AudioSource shootAudio;
 
     // Start is called before the first frame update
 
     void Start()
     {
-        
+        shootAudio = GetComponent<AudioSource>();
+
+        shootAudio.Play();
 
     }
     private void OnTriggerEnter2D(Collider2D collision)
