@@ -9,10 +9,11 @@ public class DestructibleTiles : MonoBehaviour
     public int health;
     //public float countDownTimer = 20f;
     public bool isContact = false;
+    [SerializeField] AudioSource wallAudio;
 
     private void Start()
     {
-        destructibleTilemap = GetComponent<Tilemap>();
+        destructibleTilemap = GetComponent<Tilemap>();    
     }
 
     private void Update()
@@ -53,6 +54,8 @@ public class DestructibleTiles : MonoBehaviour
                     hitPosition.y = hit.point.y + 0.01f * hit.normal.y;
                     //Set the tile in the position to disappear
                     destructibleTilemap.SetTile(destructibleTilemap.WorldToCell(hitPosition), null);
+                    wallAudio = GetComponent<AudioSource>();
+                    wallAudio.Play();
                 }
 
                 isContact = false;

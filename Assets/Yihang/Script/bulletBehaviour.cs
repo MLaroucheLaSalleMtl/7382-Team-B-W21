@@ -6,7 +6,7 @@ using UnityEngine.Tilemaps;
 public class bulletBehaviour : MonoBehaviour
 {
 
-    float countDown = 5f;
+    public float countDown = 5f;
     [SerializeField] AudioSource shootAudio;
 
     // Start is called before the first frame update
@@ -21,6 +21,10 @@ public class bulletBehaviour : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.gameObject.CompareTag("Enemy"))
+        {
+            Destroy(gameObject);
+        }
+        if (collision.gameObject.CompareTag("Wall"))
         {
             Destroy(gameObject);
         }

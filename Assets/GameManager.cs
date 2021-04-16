@@ -16,6 +16,7 @@ using UnityEngine.SceneManagement;
 public class GameManager : MonoBehaviour
 {
     public static GameManager instance = null;
+    public GameObject shopManager;
 
     [Header("Game Condition")]
     //Win or lose
@@ -36,22 +37,25 @@ public class GameManager : MonoBehaviour
     [Header("Hunger system")]
     public bool saveMode = false;//hungry value is higer than 20;
     private float maxHungryValue = 100;
-    [SerializeField] private float current_hungryValue;
+    
 
     [Header("Character properties")]
     public GameObject Player;
     private float MaxHp = 100;
-    [SerializeField] private float currentHP;
+    
     public bool canShoot = true;
     private int ammo;
 
 
 
 
+    public float currentHP;
+    public float current_hungryValue;
+    public int coin = 0;
+    public bool isInvincible = false;
+    public bool isFull = false;
 
-
-
-
+    public GameObject Canvas;
 
 
 
@@ -66,12 +70,13 @@ public class GameManager : MonoBehaviour
     [SerializeField] private hp dBar; //defend value bar
     
     [SerializeField] private hp hBar;
-    [SerializeField] private int coin = 0;
+    
     [SerializeField] private Text coinText;
     [SerializeField] private GameObject endMenu;
     [SerializeField] private GameObject winMenu;
     [SerializeField] private Text ammoDisplay;
-    [SerializeField] private GameObject reminder;
+    [SerializeField] private AudioSource hurtSound;
+
 
 
 
@@ -91,6 +96,7 @@ public class GameManager : MonoBehaviour
             {
                 Destroy(this);
             }
+
     }
     void Start()
     {
@@ -113,14 +119,16 @@ public class GameManager : MonoBehaviour
 
         winMenu.SetActive(false);
 
-        reminder.SetActive(false);
-
+        //coin = PlayerPrefs.GetInt("Coin", 0);
+        //PlayerPrefs.DeleteKey("Coin");
     }
 
 
     public void getAmmo(int v)
     {
-        this.ammo = v;
+        
+            this.ammo = v;
+        
     }
 
     //Update is called once per frame
@@ -128,15 +136,30 @@ public class GameManager : MonoBehaviour
     public void coinCollect()
     {
         coin += 1;
+
+        //PlayerPrefs.SetInt("Coin", coin);
+        
     }
     public void diamondCollect()
     {
         coin += 10;
+
+        //PlayerPrefs.SetInt("Coin", coin);
     }
-    public void hpLoose()
+    public void HPLose()
     {
-        currentHP -=5;
-        healthBar.getHealth(currentHP);
+        if (isInvincible)
+        {
+            currentHP = MaxHp;
+            healthBar.getHealth(currentHP);
+        }
+        else
+        {
+            currentHP -= 5;
+            healthBar.getHealth(currentHP);
+            Player.GetComponent<PlayerController>().hurtEffect(0.2f);
+            hurtSound.Play();
+        }
     
     }
      
@@ -171,9 +194,16 @@ public class GameManager : MonoBehaviour
 
     public void enegryChange()
     {
-       
-          current_hungryValue -= Time.deltaTime / 1.2f;
-          hBar.getEnegry(current_hungryValue);
+        if (isFull)
+        {
+            current_hungryValue = maxHungryValue;
+            hBar.getEnegry(current_hungryValue);
+        }
+        else
+        {
+            current_hungryValue -= Time.deltaTime / 1.2f;
+            hBar.getEnegry(current_hungryValue);
+        }
         
     }
 
@@ -210,18 +240,25 @@ public class GameManager : MonoBehaviour
 
  
    
-    private void gameOver()
+    public void gameOver()
     {
-        if (currentHP<=0||current_hungryValue<=0)
+        if (isLoose==true/*currentHP<=0 || current_hungryValue<=0*/)
         {
-            isLoose=true;
+            //isLoose=true;
             Destroy(Player);
             Time.timeScale = 0;
             pauseMenu.SetActive(false);
             endMenu.SetActive(true);
-
-         
         }
+        //else if (Canvas.GetComponent<CountdownTimer>().currentTime < 0)
+        //{
+        //    isLoose = true;
+        //    Destroy(Player);
+        //    Time.timeScale = 0;
+        //    pauseMenu.SetActive(false);
+        //    endMenu.SetActive(true);
+        //}
+        
     }
     private void Win()
     {        
@@ -232,6 +269,7 @@ public class GameManager : MonoBehaviour
             canShoot = false;
         }
     }
+
 
 
 
@@ -250,10 +288,21 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    public void SetInvincible()
+    {
+        isInvincible = true;
+    }
 
+    public void SetFull()
+    {
+        isFull = true;
+    }
+
+    
 
     void Update()
     {
+        //shopManager.GetComponent<ShopManager>().Buy();
         gameOver();
         Win();
         pauseDisplay();
@@ -270,19 +319,22 @@ public class GameManager : MonoBehaviour
             currentValue += Time.deltaTime * 20;
             dBar.getDefend(currentValue);
         }
+        if(currentHP <= 0 || current_hungryValue <= 0)
+        {
+            isLoose = true;
+        }
 
         hungry();
         int coinStr = (int)coin;
         coinText.text = coinStr.ToString();
-        ammoDisplay.text = ammo.ToString();
 
-        if (inDoorArea == true && hasKey == false)
+        if (Player.GetComponent<PlayerController>().hasUnlimitBullet)
         {
-            reminder.SetActive(true);
+            ammoDisplay.text = "¡Þ";
         }
-        else if (inDoorArea == false)
+        else
         {
-            reminder.SetActive(false);
+            ammoDisplay.text = ammo.ToString();
         }
 
 

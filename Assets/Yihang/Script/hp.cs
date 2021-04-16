@@ -68,7 +68,8 @@ public class hp : MonoBehaviour
 
     public void restart()
     {
-        SceneManager.LoadScene("Liang-level1 1");
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+     
         Time.timeScale = 1;
     }
 

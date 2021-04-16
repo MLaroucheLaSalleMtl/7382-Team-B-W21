@@ -7,12 +7,18 @@ using UnityEngine.UI;
 public class ShopManager : MonoBehaviour
 {
     public int[,] shopItems = new int[4, 4];
-    public int coins;
+    //public int coins;
     public Text coinsTxt;
+    public GameManager gameManager;
+    public GameObject player;
+    //public GameObject Panel;
+
     // Start is called before the first frame update
     void Start()
     {
-        coinsTxt.text = "Coins: " + coins.ToString();
+        gameManager = GameManager.instance;
+        coinsTxt.text = "Coins: " + gameManager.coin.ToString();
+        //coins = gameManager.coin;
 
         //Item ID
         shopItems[1, 1] = 1;
@@ -34,14 +40,38 @@ public class ShopManager : MonoBehaviour
     
     public void Buy()
     {
-        GameObject ButtonRef = GameObject.FindGameObjectWithTag("Event").GetComponent<EventSystem>().currentSelectedGameObject;
+        //gameManager.canShoot = false;
+        //Trying to implement a more smooth UI, but did not find a solution for it.
 
-        if(coins >= shopItems[2, ButtonRef.GetComponent<ButtonInfo>().itemID])
+        GameObject ButtonRef = GameObject.FindGameObjectWithTag("Event").GetComponent<EventSystem>().currentSelectedGameObject;
+        
+        if (gameManager.coin >= shopItems[2, ButtonRef.GetComponent<ButtonInfo>().itemID])
         {
-            coins -= shopItems[2, ButtonRef.GetComponent<ButtonInfo>().itemID];
-            shopItems[3, ButtonRef.GetComponent<ButtonInfo>().itemID]++;
-            coinsTxt.text = "Coins: " + coins.ToString();
-            ButtonRef.GetComponent<ButtonInfo>().quantityTxt.text = shopItems[3, ButtonRef.GetComponent<ButtonInfo>().itemID].ToString();
+            gameManager.coin -= shopItems[2, ButtonRef.GetComponent<ButtonInfo>().itemID];
+            //gameManager.coin = coins;
+            
+            if(shopItems[1, ButtonRef.GetComponent<ButtonInfo>().itemID] == 1)
+            {
+                gameManager.SetInvincible();
+                ButtonRef.SetActive(false);
+                
+            }
+            else if (shopItems[1, ButtonRef.GetComponent<ButtonInfo>().itemID] == 2)
+            {
+                player.GetComponent<PlayerController>().SetUnlimitBullet();
+                ButtonRef.SetActive(false);
+                
+            }
+            else if (shopItems[1, ButtonRef.GetComponent<ButtonInfo>().itemID] == 3)
+            {
+                gameManager.SetFull();
+                ButtonRef.SetActive(false);
+                
+            }
+            //shopItems[3, ButtonRef.GetComponent<ButtonInfo>().itemID]++;
+            coinsTxt.text = "Coins: " + gameManager.coin.ToString();
+            //ButtonRef.GetComponent<ButtonInfo>().quantityTxt.text = shopItems[3, ButtonRef.GetComponent<ButtonInfo>().itemID].ToString();
+            //ButtonRef.SetActive(false);
         }
     }
 }

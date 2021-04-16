@@ -24,6 +24,8 @@ TagManager:
   - diamond
   - Destruct
   - Event
+  - Wall
+  - Stone
   layers:
   - Default
   - TransparentFX

@@ -26,4 +26,6 @@ public class StartMenu : MonoBehaviour
     {
         SceneManager.LoadScene(index);
     }
+
+ 
 }

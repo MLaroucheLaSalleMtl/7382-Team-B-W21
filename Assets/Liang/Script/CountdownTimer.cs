@@ -15,16 +15,20 @@ public class CountdownTimer : MonoBehaviour
     void Start()
     {
         currentTime = startingTime;
+        gameManager = GameManager.instance;
     }
 
     // Update is called once per frame
     void Update()
     {
         currentTime -= 1 * Time.deltaTime;
-        countDownText.text = currentTime.ToString("0");
-        if(currentTime <= 0)
+        countDownText.text = (currentTime / 60).ToString("00") + ":" + (currentTime % 60).ToString("00");
+        if (currentTime <= 0)
         {
             currentTime = 0;
+            gameManager.isLoose = true;
         }
     }
+
+    
 }

@@ -26,6 +26,11 @@ public class EnemyBulleyBehavriou : MonoBehaviour
             Destroy(this.gameObject);
          
         }
+        if(collision.gameObject.CompareTag("Wall"))
+        {
+            Destroy(this.gameObject);
+        }
+
     }
 
     

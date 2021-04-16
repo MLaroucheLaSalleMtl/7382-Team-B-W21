@@ -10,6 +10,7 @@ public class PlayerController : MonoBehaviour
     Vector2 characterDirection = new Vector2(0, -1); //Character direction
     Vector2 bulletDirection = new Vector2(0, -1); //shoot where your aim at (facing)
     Vector2 stoneDirection = new Vector2(0, -1);
+    public ShopManager shopManager;
 
 
     [Header("Character properties")]
@@ -19,10 +20,11 @@ public class PlayerController : MonoBehaviour
     [Header("Ammo system")]
     [SerializeField] public float ammoRange = 10f; //bullet range
     public GameObject ammo;
-    [SerializeField] private int currentAmmo = 0;
+    public int currentAmmo = 0;
     public GameObject stone;
     private float shootrate=0.2f;
     private float nextShootTime;
+    public bool hasUnlimitBullet = false;
 
     [Header("Scale system")]
     [SerializeField] private int changeScalePickUp = 1;
@@ -46,6 +48,7 @@ public class PlayerController : MonoBehaviour
      //sound effect
     [SerializeField] AudioSource pickUpAudio;
     [SerializeField] AudioSource saveAudio;
+    
 
 
 
@@ -55,20 +58,18 @@ public class PlayerController : MonoBehaviour
     {
         myRigidbody = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
-        currentAmmo = 500;
+        currentAmmo = 0;
         currentChangeScale = 0;
         gameManager = GameManager.instance;
         ButtonDoor = GameObject.FindGameObjectWithTag("ButtonDoor");
         sr = GetComponent<SpriteRenderer>();
         original = sr.color;
-        //pickUpAudio= GetComponent<AudioSource>();
+        npcCount = GameObject.FindGameObjectsWithTag("NPC").Length; //find how many npc in the current level
 
     }
 
     private void Update()
     {
-
-
         attack();
         IsWin(npcCount);
         reduceScale();
@@ -101,7 +102,16 @@ public class PlayerController : MonoBehaviour
         }
 
         saveMode();
+
+        if(hasUnlimitBullet)
+        {
+            currentAmmo = 500;
+            gameManager.getAmmo(currentAmmo);
+        }
+        else
         gameManager.getAmmo(currentAmmo);
+
+
         if (keyNumber <= 0)
         {
             gameManager.hasKey = false;
@@ -135,8 +145,8 @@ public class PlayerController : MonoBehaviour
         }//ScaleChangePickUp
         else if (collision.gameObject.CompareTag("hpLoose") && gameManager.isProtect == false)
         {
-            gameManager.hpLoose();
-            hurtEffect(effectTimer);
+            gameManager.HPLose();
+            //hurtEffect(effectTimer);
         }
         else if (collision.gameObject.CompareTag("HPadd"))
         {
@@ -202,16 +212,13 @@ public class PlayerController : MonoBehaviour
         {
             Destroy(collision.gameObject);
             //collision.gameObject.SetActive(false);
-            npcCount++;
+            npcCount--;
             saveAudio.Play(); 
-
-
-
 
         }
     }
 
-    private void hurtEffect(float time)
+    public void hurtEffect(float time)
     {
         sr.color = Color.red;
         Invoke("resetEffect", time);
@@ -273,15 +280,13 @@ public class PlayerController : MonoBehaviour
 
     private void attack()
     {
-
-         if (Input.GetButtonDown("Fire1")&&currentAmmo>0 &&gameManager.canShoot == true&& nextShootTime < Time.time)
+        if (Input.GetButtonDown("Fire1")&&currentAmmo > 0 &&gameManager.canShoot == true&& nextShootTime < Time.time)
          {
             currentAmmo--;
             GameObject bulletRing = Instantiate(ammo, myRigidbody.position, Quaternion.identity);
             bulletRing.GetComponent<Rigidbody2D>().AddForce(bulletDirection * ammoRange, ForceMode2D.Impulse);
             nextShootTime = Time.time +shootrate;
             //shootAudio.Play();
-
         }
          else if (Input.GetButtonDown("Fire2"))
         {
@@ -307,7 +312,7 @@ public class PlayerController : MonoBehaviour
     public void IsWin(int npcCount)
     {
 
-        if (npcCount == 3)
+        if (npcCount == 0) //if the number of npc in current level is 0
         {
             gameManager.isWin = true;
         }
@@ -321,5 +326,10 @@ public class PlayerController : MonoBehaviour
          myRigidbody.velocity = pos;
             
 	}
+
+    public void SetUnlimitBullet()
+    {
+        hasUnlimitBullet = true;
+    }
 }
 

@@ -10,10 +10,13 @@ public class Projectile : MonoBehaviour
     //public GameObject Bullet;
     public int damage;
     public float rangeTimer = 3f;
+    [SerializeField] AudioSource stoneAudio;
 
     // Start is called before the first frame update
     void Start()
     {
+        stoneAudio = GetComponent<AudioSource>();
+        stoneAudio.Play();
         //target = Camera.main.ScreenToWorldPoint(Input.mousePosition);
     }
 
@@ -40,18 +43,24 @@ public class Projectile : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if(collision.CompareTag("Destructable"))
+        if (collision.gameObject.CompareTag("Wall"))
+        {
+            Destroy(gameObject);
+        }
+        if (collision.CompareTag("Destructable"))
         {
             Destroy(gameObject);
             if (collision.gameObject.GetComponent<DestructibleSprite>().health >= 0)
             {
                 collision.gameObject.GetComponent<DestructibleSprite>().health -= damage;
+                collision.gameObject.GetComponent<DestructibleSprite>().PlaySoundEffect();
             }
             //else if (collision.gameObject.GetComponent<DestructibleTiles>().health >= 0)
             //{
             //    collision.gameObject.GetComponent<DestructibleSprite>().health -= damage;
             //}
-            
+            else
+                collision.gameObject.GetComponent<DestructibleSprite>().PlaySoundEffect();
         }
         else if(collision.CompareTag("Destruct"))
         {
@@ -59,7 +68,12 @@ public class Projectile : MonoBehaviour
             if (collision.gameObject.GetComponent<DestructibleTiles>().health >= 0)
             {
                 collision.gameObject.GetComponent<DestructibleTiles>().health -= damage;
+                collision.gameObject.GetComponent<DestructibleSprite>().PlaySoundEffect();
             }
+            else
+                collision.gameObject.GetComponent<DestructibleSprite>().PlaySoundEffect();
         }
+
+
     }
 }
