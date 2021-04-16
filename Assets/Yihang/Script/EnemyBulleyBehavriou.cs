@@ -28,7 +28,7 @@ public class EnemyBulleyBehavriou : MonoBehaviour
         }
         if(collision.gameObject.CompareTag("Wall"))
         {
-            Destroy(this.gameObject);
+            Destroy(this.gameObject); //Modified by Liang
         }
 
     }

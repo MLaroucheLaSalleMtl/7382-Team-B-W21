@@ -5,6 +5,8 @@ using UnityEngine.UI;
 
 public class CountdownTimer : MonoBehaviour
 {
+    //Liang
+
     GameManager gameManager;
     public float currentTime = 0f;
     [SerializeField] private float startingTime = 100f;
@@ -26,7 +28,7 @@ public class CountdownTimer : MonoBehaviour
         if (currentTime <= 0)
         {
             currentTime = 0;
-            gameManager.isLoose = true;
+            gameManager.isLoose = true; //Modified by Yihang
         }
     }
 

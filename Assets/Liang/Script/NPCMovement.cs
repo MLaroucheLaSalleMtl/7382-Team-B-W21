@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class NPCMovement : MonoBehaviour
 {
+    //Liang
 
     //NPC moving speed, walk and wait duration
     [SerializeField] private float moveSpeed; 

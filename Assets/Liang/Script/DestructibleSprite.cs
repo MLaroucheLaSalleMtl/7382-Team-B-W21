@@ -4,9 +4,10 @@ using UnityEngine;
 
 public class DestructibleSprite : MonoBehaviour
 {
+    //Liang
     public int health;
     [SerializeField] AudioSource stoneAudio;
-    [SerializeField] GameObject brickReminder;
+    [SerializeField] GameObject brickReminder; //modified by Yihang
 
     // Start is called before the first frame update
     void Start()

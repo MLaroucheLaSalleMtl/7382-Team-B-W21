@@ -3,6 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
+
+//We Finally choose not to use this script.
+
+
 /// <summary>
 /// This is the script that controls the button Start game, as it uses an AsyncOeration to pre
 /// load the secenes. I have used the method that requires a buildIndex for the button to call

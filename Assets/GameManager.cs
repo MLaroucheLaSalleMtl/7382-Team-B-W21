@@ -15,6 +15,10 @@ using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
+
+    //This script is created by Yihang, and later on modified by Liang
+    //in some properties and methods.
+
     public static GameManager instance = null;
     public GameObject shopManager;
 

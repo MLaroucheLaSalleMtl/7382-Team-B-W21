@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class StoneBehaviour : MonoBehaviour
 {
+    //prototype script for Projectile, did not use this in the final
+    //game.
+    
     public float attackCountDown = 3f;
     [SerializeField] AudioSource stoneAudio;
     // Start is called before the first frame update

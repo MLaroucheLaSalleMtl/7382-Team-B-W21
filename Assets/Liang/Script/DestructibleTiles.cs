@@ -5,6 +5,8 @@ using UnityEngine.Tilemaps;
 
 public class DestructibleTiles : MonoBehaviour
 {
+    //Liang
+
     public Tilemap destructibleTilemap;
     public int health;
     //public float countDownTimer = 20f;

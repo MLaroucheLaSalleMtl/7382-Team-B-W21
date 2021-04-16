@@ -6,6 +6,8 @@ using UnityEngine.UI;
 
 public class ShopManager : MonoBehaviour
 {
+    //Liang
+
     public int[,] shopItems = new int[4, 4];
     //public int coins;
     public Text coinsTxt;

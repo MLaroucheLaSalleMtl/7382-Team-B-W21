@@ -26,7 +26,7 @@ public class bulletBehaviour : MonoBehaviour
         }
         if (collision.gameObject.CompareTag("Wall"))
         {
-            Destroy(gameObject);
+            Destroy(gameObject); //Modified by Liang
         }
     }
 

@@ -5,6 +5,8 @@ using UnityEngine.Tilemaps;
 
 public class Projectile : MonoBehaviour
 {
+    //Liang
+
     //private Vector2 target;
     //public float Speed;
     //public GameObject Bullet;

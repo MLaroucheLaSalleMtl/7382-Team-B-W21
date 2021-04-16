@@ -5,7 +5,12 @@ using UnityEngine.UI;
 
 public class MainCharacter : MonoBehaviour
 {
-    
+    //Liang was going to modify the PlayerController script,
+    //to make it properly arranged, but we did not choose to
+    //continue with this, but to keep the original script, and 
+    //using this layout.
+
+
     private GameManager gameManager;
     Rigidbody2D myRigidbody;
     Animator anim;

@@ -4,6 +4,11 @@ using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour
 {
+
+    //This script was created by Yihang, and later on modified by Liang
+    //in some properties and methods.
+
+
     private GameManager gameManager;
     Rigidbody2D myRigidbody;
     Animator anim;

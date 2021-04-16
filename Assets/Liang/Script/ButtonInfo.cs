@@ -5,6 +5,7 @@ using UnityEngine.UI;
 
 public class ButtonInfo : MonoBehaviour
 {
+    //Liang
 
     public int itemID;
     public Text priceTxt;

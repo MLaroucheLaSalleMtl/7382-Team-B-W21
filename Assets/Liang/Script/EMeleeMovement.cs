@@ -6,6 +6,9 @@ using UnityEngine.SceneManagement;
 public class EMeleeMovement : MonoBehaviour
 {
 
+    // Liang
+
+
     //NPC moving speed, walk and wait duration
     [SerializeField] private float moveSpeed; 
     [SerializeField] private float walkTime;
